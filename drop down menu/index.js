@@ -1,65 +1,109 @@
- class dropDownMenu {
-    constructor(id) {
-         this.kids =[]
-        this.navbar = htmlGetter.getById(id)
-        Peter.molestKids(this.navbar,  this.makeKid)
-
-         // makeKid(child, target=this) {
-         //     console.log(child.innerText)
-         //    const kid = new content(child)
-         //      target.kids.push(kid)
-         // }
-         }
-
-     makeKid(child, target=this) {
-          console.log( this)
-         // console.log(super)
-         const kid = new content(child)
-         target.kids.push(kid)
-     }
-     //this.content.foreach(object => object.addeventlistener('hover', (object) => showchildren(object))
-
-    }
-  class content {
-      constructor(element) {
+ class dropDownObject {
+    constructor(element) {
         this.id = element.id
-        Peter.molestKids(element,Peter.hideElement)
+        Object.assign(this, domHandle)
+        }
+    }
+
+class dropDownMenu extends dropDownObject {
+    constructor(element) {
+        super(element);
+        this.kids =this.makeBabies(this.id)
+
+        // this.kids.push(this.doSomethingWithKids(element,  this.makeKid))
+    }
+
+}
+ class dropDownItem extends dropDownObject {
+      constructor(element) {
+         super(element);
+         this.doSomethingWithKids(element,this.hideElement)
+           const target = this
+          element.addEventListener('click', this.showSelection.bind(this, element))
+
       }
-  }
- class Peter {
-     static molestKids(element,fn) {
-          const children = document.querySelectorAll(`#${element.id} > div`)
+      showSelection(element){
+          this.hideAllSiblings(element)
+          this.doSomethingWithKids(element,this.showElement)
+
+      }
+
+     hideAllSiblings(element) {
+
+         const getAllSiblings =  this.makeBabies(element.parentElement.id)
+         for (const object of getAllSiblings) {
+
+             this.doSomethingWithKids( object , this.hideElement)
+
+         }
+     } }
+
+
+
+ const domHandle = {
+
+     // var _privateProperty ="hi";
+      getById:  (id) => {
+         return document.getElementById(id) },
+     getByClass: (identifier) => {
+         return document.getElementsByClassName(identifier)
+     },
+     doSomethingWithKids: (element, fn) => {                                                                                                                                                 {
+         const children = document.querySelectorAll(`#${element.id} > div`)
+         const object = []
+         for (const child of children) {
+              object.push(fn(child))
+         }
+         return object
+     }},
+     hideElement: (element) => {
+         element.classList.add('hidden')
+     },
+     showElement: (element) => {
+         element.classList.add('hidden')
+     },
+
+     hideAll: (element) => {
+         element.classList.add('hidden')
+     },
+     makeBabies: (id) => {
+          const  target =document.getElementById(id)
+         const obt = []
+         for (const o of target.children) {
+              const item = new dropDownItem(o)
+             obt.push(item)
+         } return obt
+     }
+
+ };
+
+
+
+ const domHandler =(function () {
+    'use strict';
+    // var _privateProperty ="hi";
+    function getById(id) {
+        return document.getElementById(id)
+        }
+    function getByClass(identifier) {
+        return document.getElementsByClassName(identifier)
+        }
+     const doSomethingWithKids = (element, fn) => {                                                                                                                                                 {
+         const children = document.querySelectorAll(`#${element.id} > div`)
          for (const child of children) {
              fn(child)
-         }
-     }
-      static hideElement(element) {
+            }
+        }}
+    function hideElement(element) {
          element.classList.add('hidden')
      }
-      static molestTheGrandkids(element,fn) {
-         for (const child of element.children) {
-             for (const grandchild of child.children) {
-                 fn(grandchild)
-             }
-         }
-     }
+    return{getById,
+        getByClass,
+        doSomethingWithKids,
+        hideElement}
+    })();
 
 
 
- }
-
-  class htmlGetter {
-     static getById(id) {
-         return document.getElementById(id)
-     }
-
-     static getByClass(identifier) {
-         return document.querySelectorAll(identifier)
-     }
- }
-
- new dropDownMenu('navbar')
-
- function f() {
-     
- }
+ const navbar = document.getElementById('navbar')
+  const dropDown= new dropDownMenu(navbar)
