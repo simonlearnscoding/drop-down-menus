@@ -1,32 +1,60 @@
-
+:root {
+    --navBarHeight: 12rem;
+}
 body {
   width:100%;
     margin: 0px;
 
 }
+
 #navbar {
-     background-color: red;
+     /*background-color: red;*/
   display:flex;
   flex-flow: row;
   width: 100%;
-    height: 3rem;
+    height: var(--navBarHeight);
     align-items: center;
     justify-content: space-around;
     flex-grow: 1;
 }
 .content{
     display: flex;
+    margin-top: 24px;
     justify-content: center;
     align-items: center;
     width:100%;
     height: 100%;
-    border-left: 1px solid black;
+    flex-flow: column;
+    /*border-left: 1px solid black;*/
 
 
 }
-.content:hover{
-    background: #000;
-}
-.hidden {
+
+.hidden > * {
    display:none;
+    padding: 0;
+}
+
+.sub-content .hidden {
+    background: none;
+}
+.sub-content {
+    display: flex;
+    background: gray;
+    flex-grow: 3;
+    height: 100%;
+    margin-top: 8px;
+    padding: 4px;
+    padding-top: 16px;
+    align-items: center;
+    flex-flow: column;
+    justify-self: center;
+    top: var(--navBarHeight);
+    justify-content: center;
+
+    /*position: relative;*/
+    /*background: black;*/
+}
+.sub-content > * {
+    flex-grow: 1;
 }
