@@ -1,6 +1,7 @@
  class dropDownObject {
     constructor(element) {
         this.id = element.id
+        this.html = element
         Object.assign(this, domHandle)
         }
     }
@@ -8,34 +9,34 @@
 class dropDownMenu extends dropDownObject {
     constructor(element) {
         super(element);
-        this.kids =this.makeBabies(this.id)
+        this.kids =this.makeBabies(this)
 
         // this.kids.push(this.doSomethingWithKids(element,  this.makeKid))
     }
 
 }
  class dropDownItem extends dropDownObject {
-      constructor(element) {
+      constructor(element,father) {
          super(element);
+         this.father = father
          this.doSomethingWithKids(element,this.hideElement)
            const target = this
+           console.log( this.html)
+          console.log( element)
           element.addEventListener('click', this.showSelection.bind(this, element))
 
       }
       showSelection(element){
-          this.hideAllSiblings(element)
+          this.hideAllSiblings()
           this.doSomethingWithKids(element,this.showElement)
 
       }
 
-     hideAllSiblings(element) {
-
-         const getAllSiblings =  this.makeBabies(element.parentElement.id)
-         for (const object of getAllSiblings) {
-
-             this.doSomethingWithKids( object , this.hideElement)
-
+     hideAllSiblings() {
+         for (const  child of this.father.kids) {
+             this.doSomethingWithKids(child.html, this.hideElement)
          }
+
      } }
 
 
@@ -60,20 +61,21 @@ class dropDownMenu extends dropDownObject {
          element.classList.add('hidden')
      },
      showElement: (element) => {
-         element.classList.add('hidden')
+         element.classList.remove('hidden')
      },
 
      hideAll: (element) => {
          element.classList.add('hidden')
      },
-     makeBabies: (id) => {
-          const  target =document.getElementById(id)
+     makeBabies: (target) => {
+          const   father =document.getElementById(target.id)
          const obt = []
-         for (const o of target.children) {
-              const item = new dropDownItem(o)
+         for (const o of  father.children) {
+              const item = new dropDownItem(o, target)
              obt.push(item)
          } return obt
      }
+
 
  };
 
