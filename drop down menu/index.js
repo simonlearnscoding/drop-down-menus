@@ -3,8 +3,16 @@
         this.id = element.id
         this.html = element
         Object.assign(this, domHandle)
-        }
+        this.giveItDeviceClass(element)
+
     }
+        mobile() {return false} //to do check if true or false
+     giveItDeviceClass(element) {
+         const className = this.mobile()? 'mobile' : 'desktop'
+         element.classList.add(className)
+     }
+ }
+
 
 class dropDownMenu extends dropDownObject {
     constructor(element) {
@@ -19,36 +27,50 @@ class dropDownMenu extends dropDownObject {
       constructor(element,father) {
          super(element);
          this.father = father
+         this.giveItContentClass(this.html)
          this.doSomethingWithKids(element,this.hideElement)
+         this.doSomethingWithKids(element,this.giveItSubcontentClass.bind(this))
            const target = this
-           console.log( this.html)
-          console.log( element)
           element.addEventListener('click', this.showSelection.bind(this, element))
-
+      }
+      giveItContentClass(element) {
+          this.giveItDeviceClass(element)
+          element.classList.add('content')
+      }
+      giveItSubcontentClass(element) {
+          this.giveItDeviceClass(element)
+          element.classList.add('sub-content')
       }
       showSelection(element){
           this.hideAllSiblings()
+          const box = this.createInvisibleBox(element)
+          box.addEventListener('click', this.undoClick.bind(this, box))
+          element.classList.add('clicked')
           this.doSomethingWithKids(element,this.showElement)
-
       }
+    undoClick(box) {
+        this.hideAllSiblings()
+        box.remove()
 
+    }
      hideAllSiblings() {
          for (const  child of this.father.kids) {
+             child.html.classList.remove('clicked')
              this.doSomethingWithKids(child.html, this.hideElement)
          }
 
-     } }
+     }
+     createInvisibleBox(element){
+          const div = document.createElement('div')
+         div.classList.add('graybox')
+         this.father.html.appendChild(div)
+         // element.appendChild(div)
+         return div
+     }}
 
 
 
  const domHandle = {
-
-     // var _privateProperty ="hi";
-      getById:  (id) => {
-         return document.getElementById(id) },
-     getByClass: (identifier) => {
-         return document.getElementsByClassName(identifier)
-     },
      doSomethingWithKids: (element, fn) => {                                                                                                                                                 {
          const children = document.querySelectorAll(`#${element.id} > div`)
          const object = []
@@ -59,13 +81,11 @@ class dropDownMenu extends dropDownObject {
      }},
      hideElement: (element) => {
          element.classList.add('hidden')
+         element.classList.remove('showing')
      },
      showElement: (element) => {
+         element.classList.add('showing')
          element.classList.remove('hidden')
-     },
-
-     hideAll: (element) => {
-         element.classList.add('hidden')
      },
      makeBabies: (target) => {
           const   father =document.getElementById(target.id)
@@ -98,7 +118,8 @@ class dropDownMenu extends dropDownObject {
         }}
     function hideElement(element) {
          element.classList.add('hidden')
-     }
+        element.classList.remove('showing')
+    }
     return{getById,
         getByClass,
         doSomethingWithKids,
